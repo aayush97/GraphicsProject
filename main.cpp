@@ -2,6 +2,8 @@
 #include "vectormath.h"
 #include "matrix.h"
 #include <SFML/Graphics.hpp>
+#include "model.h"
+
 using namespace std;
 
 const double PI = 3.14159265359;
@@ -115,76 +117,164 @@ public:
 
 
 
+
+
+
+
+
+
+
 int main() {
-	vector<Vector> Modelvertices;
+	Model m;
+	if(!m.loadModel("DNA.obj")){
+		cout << "Obj file couldn't be opened!" << endl;
+		exit(1);
+	}
+	vector<Vector> Modelvertices = m.v;
 	vector<Vector> WorldVertices;
-	Modelvertices.push_back(Vector(0,0,0));
-	Modelvertices.push_back(Vector(100,0,0));
-	Modelvertices.push_back(Vector(0,100,0));
-	Modelvertices.push_back(Vector(0,0,100));
-	Modelvertices.push_back(Vector(100,100,0));
-	Modelvertices.push_back(Vector(100,0,100));
-	Modelvertices.push_back(Vector(0,100,100));
-	Modelvertices.push_back(Vector(100,100,100));
-	Matrix m = rotateX(90);
+	// Modelvertices.push_back(Vector(0,0,0));
+	// Modelvertices.push_back(Vector(100,0,0));
+	// Modelvertices.push_back(Vector(0,100,0));
+	// Modelvertices.push_back(Vector(0,0,100));
+	// Modelvertices.push_back(Vector(100,100,0));
+	// Modelvertices.push_back(Vector(100,0,100));
+	// Modelvertices.push_back(Vector(0,100,100));
+	// Modelvertices.push_back(Vector(100,100,100));
+	Matrix r = rotateY(45);
 	for(int i=0;i<Modelvertices.size();i++){
-		Modelvertices[i] = m*Modelvertices[i];
+		Modelvertices[i] = r*Modelvertices[i];
 	}
 	vector<Vector> ProjectionVertices;
-	vector< pair<int,int> > edgeList;
-	edgeList.push_back(make_pair(0,1));
-	edgeList.push_back(make_pair(0,2));
-	edgeList.push_back(make_pair(0,3));
-	edgeList.push_back(make_pair(1,4));
+	// vector< pair<int,int> > edgeList;
+	// vector< vector<int> > faces;
+	// vector<int> faceBuffer;
 
-	edgeList.push_back(make_pair(1,5));
-	edgeList.push_back(make_pair(2,6));
-	edgeList.push_back(make_pair(2,4));
-	edgeList.push_back(make_pair(3,5));
+	// faceBuffer.push_back(0);
+	// faceBuffer.push_back(1);
+	// faceBuffer.push_back(5);
+	// faceBuffer.push_back(3);
+	// faces.push_back(faceBuffer);
+	// faceBuffer.clear();
 
-	edgeList.push_back(make_pair(3,6));
-	edgeList.push_back(make_pair(4,7));
-	edgeList.push_back(make_pair(5,7));
-	edgeList.push_back(make_pair(6,7));
+	// faceBuffer.push_back(0);
+	// faceBuffer.push_back(3);
+	// faceBuffer.push_back(6);
+	// faceBuffer.push_back(2);
+	// faces.push_back(faceBuffer);
+	// faceBuffer.clear();
 
-	WorldCoordinateTransform WCTransform(Vector(0,0,1,1),Vector(0,1,0,1),Vector(50,50,-50,1));
+	// faceBuffer.push_back(3);
+	// faceBuffer.push_back(5);
+	// faceBuffer.push_back(7);
+	// faceBuffer.push_back(6);
+	// faces.push_back(faceBuffer);
+	// faceBuffer.clear();
+
+	// faceBuffer.push_back(0);
+	// faceBuffer.push_back(2);
+	// faceBuffer.push_back(4);
+	// faceBuffer.push_back(1);
+	// faces.push_back(faceBuffer);
+	// faceBuffer.clear();
+
+	// faceBuffer.push_back(2);
+	// faceBuffer.push_back(6);
+	// faceBuffer.push_back(7);
+	// faceBuffer.push_back(4);
+	// faces.push_back(faceBuffer);
+	// faceBuffer.clear();
+
+	// faceBuffer.push_back(1);
+	// faceBuffer.push_back(4);
+	// faceBuffer.push_back(7);
+	// faceBuffer.push_back(5);
+	// faces.push_back(faceBuffer);
+	// faceBuffer.clear();
+
+	// vector< vector<double> > facesEquation;
+
+
+	// edgeList.push_back(make_pair(0,1));
+	// edgeList.push_back(make_pair(0,2));
+	// edgeList.push_back(make_pair(0,3));
+	// edgeList.push_back(make_pair(1,4));
+
+	// edgeList.push_back(make_pair(1,5));
+	// edgeList.push_back(make_pair(2,6));
+	// edgeList.push_back(make_pair(2,4));
+	// edgeList.push_back(make_pair(3,5));
+
+	// edgeList.push_back(make_pair(3,6));
+	// edgeList.push_back(make_pair(4,7));
+	// edgeList.push_back(make_pair(5,7));
+	// edgeList.push_back(make_pair(6,7));
+
+	WorldCoordinateTransform WCTransform(Vector(0,0,1,1),Vector(0,1,0,1),Vector(0,0,0,1));
 	Matrix WCT = WCTransform.getComposite();
-	ProjectionTransformation PT(-100,-400);
+	ProjectionTransformation PT(200,400);
 	Matrix PPT = PT.getComposite();
-
+	cout << Modelvertices.size() <<endl;
 	for(int i=0;i<Modelvertices.size();i++){
+		//cout << Modelvertices[i].x << " " << Modelvertices[i].y <<  " " << Modelvertices[i].z << endl;
 		WorldVertices.push_back(WCT*Modelvertices[i]);
+		//cout << WorldVertices[i].x << " " << WorldVertices[i].y <<  " " << WorldVertices[i].z << endl;
+		//cout << WorldVertices[i].h << endl;
 	}
+
+
 
 	for(int i=0;i<WorldVertices.size();i++){
 		ProjectionVertices.push_back(PPT*WorldVertices[i]);
+		//cout << ProjectionVertices[i].x  << " " << ProjectionVertices[i].y << " " << ProjectionVertices[i].z<< endl;
 
 	}
 
+
+	cout << ProjectionVertices.size() << endl;
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Wireframe");
-	sf::VertexArray lines(sf::LinesStrip, 2);
-	    for(int i=0;i<12;i++){
-	    	double x1 = ProjectionVertices[edgeList[i].first].x;
-	    	double y1 = ProjectionVertices[edgeList[i].first].y;
-	    	double h1 = ProjectionVertices[edgeList[i].first].h;
-	    	double x2 = ProjectionVertices[edgeList[i].second].x;
-	    	double y2 = ProjectionVertices[edgeList[i].second].y;
-	    	double h2 = ProjectionVertices[edgeList[i].second].h;
+	sf::VertexArray lines(sf::LinesStrip, 4);
+
+	    for(int i=0;i<m.f.size();i++){
+	    	double x1 = ProjectionVertices[m.f[i].v[0]].x;
+	    	double y1 = ProjectionVertices[m.f[i].v[0]].y;
+	    	double z1 = ProjectionVertices[m.f[i].v[0]].z;
+	    	double h1 = ProjectionVertices[m.f[i].v[0]].h;
+	    	double x2 = ProjectionVertices[m.f[i].v[1]].x;
+	    	double y2 = ProjectionVertices[m.f[i].v[1]].y;
+	    	double z2 = ProjectionVertices[m.f[i].v[1]].z;
+	    	double h2 = ProjectionVertices[m.f[i].v[1]].h;
+	    	double x3 = ProjectionVertices[m.f[i].v[2]].x;
+	    	double y3 = ProjectionVertices[m.f[i].v[2]].y;
+	    	double z3 = ProjectionVertices[m.f[i].v[2]].z;
+	    	double h3 = ProjectionVertices[m.f[i].v[2]].h;
 	    	x1/=h1;
 	    	x2/=h2;
+	    	x3/=h3;
 	    	y1/=h1;
 	    	y2/=h2;
-	    	int xa=x1*2+300;
-	    	int ya=y1*2+300;
-	    	int xb=x2*2+300;
-	    	int yb=y2*2+300;
+	    	y3/=h3;
+	    	z1/=h1;
+	    	z1/=h2;
+	    	z3/=h3;
+
+	    	int xa=x1+300;
+	    	int ya=y1+300;
+	    	int za=z1;
+	    	int xb=x2+300;
+	    	int yb=y2+300;
+	    	int zb=z2;
+	    	int xc=x3+300;
+	    	int yc=y3+300;
+	    	int zc=z3;
 	    	
-	    	cout << xa << " " << ya  << " " << xb << " " << yb << endl;
+	    	cout << xa << " " << ya  << " " << za << " " <<  xb << " " << yb << " " << zb << endl;
 	    	lines[0].position = sf::Vector2f(xa,ya);
 	 		lines[1].position = sf::Vector2f(xb,yb);
+	 		lines[2].position = sf::Vector2f(xc,yc);
+	 		lines[3].position = sf::Vector2f(xa,ya);
 
 	 		window.draw(lines);
-	    }
+	     }
 	while (window.isOpen())
     {
         sf::Event event;

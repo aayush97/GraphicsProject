@@ -4,30 +4,30 @@
 
 struct Vector
 {
-	float x, y, z,h;
+	double x, y, z,h;
 
 	Vector();
 	Vector(const Vector& v);
-	Vector(float x, float y, float z,float h=1.0f);
-	Vector(float f);
+	Vector(double x, double y, double z,double h=1.0f);
+	Vector(double f);
 
 	virtual ~Vector();
 
-	inline float length2();
-	inline float length();
+	inline double length2();
+	inline double length();
 
-	float normalize();
+	double normalize();
 	Vector normalized();
 
 	Vector& operator =(const Vector& v);
 	Vector& operator +=(const Vector& v);
 	Vector& operator -=(const Vector& v);
-	Vector& operator *=(float f);
-	Vector& operator /=(float f);
+	Vector& operator *=(double f);
+	Vector& operator /=(double f);
 	Vector operator -() const;
 };
 
-float dot(Vector v1, Vector v2);
+double dot(Vector v1, Vector v2);
 Vector cross(Vector v1, Vector v2);
 
 inline Vector operator +(const Vector& v1, const Vector& v2)
@@ -63,14 +63,14 @@ inline Vector operator *(const Vector& v1, const Vector& v2)
 		v1.z * v2.z);
 }
 
-inline Vector operator *(const Vector& v, float f)
+inline Vector operator *(const Vector& v, double f)
 {
 	return Vector(v.x * f,
 		v.y * f,
 		v.z * f);
 }
 
-inline Vector operator *(float f, const Vector& v)
+inline Vector operator *(double f, const Vector& v)
 {
 	return Vector(f * v.x,
 		f * v.y,
@@ -84,14 +84,14 @@ inline Vector operator /(const Vector& v1, const Vector& v2)
 		v1.z / v2.z);
 }
 
-inline Vector operator /(const Vector& v, float f)
+inline Vector operator /(const Vector& v, double f)
 {
 	return Vector(v.x / f,
 		v.y / f,
 		v.z / f);
 }
 
-inline Vector operator /(float f, const Vector& v)
+inline Vector operator /(double f, const Vector& v)
 {
 	return Vector(f / v.x,
 		f / v.y,
@@ -102,12 +102,12 @@ typedef Vector Point;
 
 struct Vector2
 {
-	float u, v;
+	double u, v;
 
 	Vector2();
 	Vector2(const Vector2& v);
-	Vector2(float u, float v);
-	Vector2(float f);
+	Vector2(double u, double v);
+	Vector2(double f);
 
 	virtual ~Vector2();
 
